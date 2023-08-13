@@ -1,5 +1,5 @@
 import { Uri, window, workspace } from "vscode";
-import { FILE_SETTINGS_KEYS } from "../Constants";
+import { FILE_SETTINGS_KEYS } from "./Constants";
 
 export interface NewFileSettings {
 	defaultFilePath: string;
