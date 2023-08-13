@@ -1,4 +1,5 @@
 import { Uri, window, workspace } from "vscode";
+import { FILE_SETTINGS_KEYS } from "../Constants";
 
 export interface NewFileSettings {
 	defaultFilePath: string;
@@ -9,18 +10,19 @@ export interface NewFileSettings {
 	defaultTestFileExtension: string;
 	relativeTo: "file" | "project" | "root";
 }
-class FileController {
+export class FileController {
 	getDefaultSettings = (): NewFileSettings => {
-
-    const config = workspace.getConfiguration('newLFile', this.getUriOfCurrentFile());
+    const currentUri = this.getUriOfCurrentFile();
+    const config = workspace.getConfiguration('newLFile', currentUri);
+    let fileName = 'newFile';
 		const newFileSettings: NewFileSettings = {
-			defaultFilePath: "",
-			defaultFileName: "",
-			defaultFileExtension: "",
-			defaultTestFilePath: "",
-			defaultTestFileName: "",
-			defaultTestFileExtension: "",
-			relativeTo: "file",
+			defaultFilePath: config.get(FILE_SETTINGS_KEYS.defaultFilePath, "./"),
+			defaultFileName: config.get(FILE_SETTINGS_KEYS.defaultFileName, fileName),
+			defaultFileExtension: config.get(FILE_SETTINGS_KEYS.defaultFileExt, ".ts"),
+			defaultTestFilePath: config.get(FILE_SETTINGS_KEYS.defaultTestFilePath, "./"),
+			defaultTestFileName: config.get(FILE_SETTINGS_KEYS.defaultFileName, fileName + ".test"),
+			defaultTestFileExtension: config.get(FILE_SETTINGS_KEYS.defaultFileName, ".ts"),
+			relativeTo: config.get(FILE_SETTINGS_KEYS.relativeTo, "file"),
 		};
 		return newFileSettings;
 	};
